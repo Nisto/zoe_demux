@@ -17,10 +17,10 @@ uint16_t get_u16_be(uint8_t *buf)
 
 void put_u32_le(uint8_t *buf, uint32_t n)
 {
-    buf[0] = n & 0xFF;
-    buf[1] = (n >> 8) & 0xFF;
-    buf[2] = (n >> 16) & 0xFF;
-    buf[3] = (n >> 24) & 0xFF;
+    buf[0] = (uint8_t)(n & 0xFF);
+    buf[1] = (uint8_t)((n >> 8) & 0xFF);
+    buf[2] = (uint8_t)((n >> 16) & 0xFF);
+    buf[3] = (uint8_t)((n >> 24) & 0xFF);
 }
 
 void efopen(FILE **stream, const char *filename, const char *mode)
@@ -451,7 +451,10 @@ int main(int argc, char *argv[])
     }
 
     // clean up
-    fclose(pss);
+    if (0 != fclose(pss)) {
+		printf("%s: could not close PSS file\n", pss_path);
+		exit(EXIT_FAILURE);
+	}
     free(streambuf);
     for (stream=0; stream<STREAMS_MAX; ++stream) {
         if (streams[stream].f) {
