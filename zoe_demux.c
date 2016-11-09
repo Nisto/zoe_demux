@@ -452,9 +452,9 @@ int main(int argc, char *argv[])
 
     // clean up
     if (0 != fclose(pss)) {
-		printf("%s: could not close PSS file\n", pss_path);
-		exit(EXIT_FAILURE);
-	}
+        printf("%s: could not close PSS file\n", pss_path);
+        exit(EXIT_FAILURE);
+    }
     free(streambuf);
     for (stream=0; stream<STREAMS_MAX; ++stream) {
         if (streams[stream].f) {
