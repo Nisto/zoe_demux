@@ -123,6 +123,7 @@ const char *stream_names[] = {
     ".m2a",
     ".m2v",
     ".bin",
+    "_subs_jp.bin",
     "_subs_en.bin",
     "_subs_fr.bin",
     "_subs_de.bin",
@@ -134,10 +135,11 @@ enum {
     STREAM_AUDIO   = 1,
     STREAM_VIDEO   = 2,
     STREAM_BIN     = 3,
-    STREAM_SUBS_EN = 4,
-    STREAM_SUBS_FR = 5,
-    STREAM_SUBS_DE = 6,
-    STREAM_SUBS_IT = 7
+    STREAM_SUBS_JP = 4,
+    STREAM_SUBS_EN = 5,
+    STREAM_SUBS_FR = 6,
+    STREAM_SUBS_DE = 7,
+    STREAM_SUBS_IT = 8
 };
 
 typedef struct {
@@ -147,6 +149,7 @@ typedef struct {
 
 #define STREAMS_MAX ((sizeof stream_names) / (sizeof *stream_names))
 
+#define ZOE_SSID_SUBS_JP 0x00
 #define ZOE_SSID_ADPCM   0x01
 #define ZOE_SSID_BIN     0x05
 #define ZOE_SSID_SUBS_EN 0x07
@@ -383,7 +386,9 @@ int main(int argc, char *argv[])
                     // first byte of payload is the substream ID
                     ssid = streambuf[0x10];
 
-                    if (ssid == ZOE_SSID_ADPCM) {
+                    if (ssid == ZOE_SSID_SUBS_JP) {
+                        stream = STREAM_SUBS_JP;
+                    } else if (ssid == ZOE_SSID_ADPCM) {
                         stream = STREAM_ADPCM;
                     } else if (ssid == ZOE_SSID_BIN) {
                         stream = STREAM_BIN;
